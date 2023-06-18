@@ -40,18 +40,17 @@ public class CalculatorService implements Runnable {
         while (true) {
             String serviceNumber = input.selectService();
 
-            ServiceSelection selected = ServiceSelection.selectService(serviceNumber);
-
-            boolean exitService = progressService(selected);
+            boolean exitService = progressService(serviceNumber);
             if (exitService) {
                 break;
             }
         }
     }
 
-    private boolean progressService(ServiceSelection selected) {
+    private boolean progressService(String serviceNumber) {
         boolean exitService = false;
         try {
+            ServiceSelection selected = ServiceSelection.getValue(serviceNumber);
             exitService = selectService(selected);
         } catch (RuntimeException ex) {
             output.printError(ex);
@@ -63,9 +62,6 @@ public class CalculatorService implements Runnable {
     private boolean selectService(ServiceSelection selectedService) {
         boolean exitService = false;
         switch (selectedService) {
-            case NOT_SELECTED -> {
-                output.inputError();
-            }
             case LOOKUP_RECORDS -> {
                 List<Calculator> findCalculations = findCalculations();
                 output.printResult(findCalculations);
