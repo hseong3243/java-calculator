@@ -1,13 +1,13 @@
 package com.programmers.io;
 
-import com.programmers.domain.Calculator;
+import com.programmers.vo.CalculationResult;
 
 import java.util.List;
 
 public interface Output {
-    void printResult(int result);
+    void printResult(List<CalculationResult> result);
 
-    void printResult(List<Calculator> findCalculations);
+    void printResult(int result);
 
     void exit();
 

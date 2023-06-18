@@ -1,11 +1,10 @@
 package com.programmers.repository;
 
-import com.programmers.domain.Calculator;
+import com.programmers.vo.CalculationResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.programmers.util.CalculatorTestUtil.createCalculation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CalculationMemoryRepositoryTest {
@@ -14,13 +13,13 @@ class CalculationMemoryRepositoryTest {
     @Test
     void save() {
         //given
-        Calculator calculation = createCalculation("1 + 2 + 3");
+        CalculationResult calculation = new CalculationResult(List.of("1", "+", "2", "+", "3"), 6);
 
         //when
         calculatorRepository.save(calculation);
 
         //then
-        List<Calculator> result = calculatorRepository.findAll();
+        List<CalculationResult> result = calculatorRepository.findAll();
 
         assertThat(result).containsExactly(calculation);
     }
@@ -28,15 +27,15 @@ class CalculationMemoryRepositoryTest {
     @Test
     void findAll() {
         //given
-        Calculator calculationA = createCalculation("1 + 2 + 3");
-        Calculator calculationB = createCalculation("1 + 3 + 5");
+        CalculationResult calculationA = new CalculationResult(List.of("1", "+", "2", "+", "3"), 6);
+        CalculationResult calculationB = new CalculationResult(List.of("1", "+", "3", "+", "5"), 6);
 
         //when
         calculatorRepository.save(calculationA);
         calculatorRepository.save(calculationB);
 
         //then
-        List<Calculator> result = calculatorRepository.findAll();
+        List<CalculationResult> result = calculatorRepository.findAll();
 
         assertThat(result).containsExactly(calculationA, calculationB);
     }

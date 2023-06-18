@@ -2,6 +2,7 @@ package com.programmers.service;
 
 import com.programmers.domain.Calculator;
 import com.programmers.domain.Tokenizer;
+import com.programmers.vo.CalculationResult;
 import com.programmers.enumtype.ServiceSelection;
 import com.programmers.io.Input;
 import com.programmers.io.Output;
@@ -21,17 +22,19 @@ public class CalculatorService implements Runnable {
     }
 
     public int calculate(String input) {
-        List<String> tokenized = Tokenizer.tokenizeAsExpression(input);
+        List<String> infixExpression = Tokenizer.tokenizeAsExpression(input);
 
-        Calculator calculator = new Calculator(tokenized);
+        Calculator calculator = new Calculator(infixExpression);
         int result = calculator.calculate();
 
-        calculatorRepository.save(calculator);
+        CalculationResult calculationResult = new CalculationResult(infixExpression, result);
+
+        calculatorRepository.save(calculationResult);
 
         return result;
     }
 
-    public List<Calculator> findCalculations() {
+    public List<CalculationResult> findCalculations() {
         return calculatorRepository.findAll();
     }
 
@@ -63,7 +66,7 @@ public class CalculatorService implements Runnable {
         boolean exitService = false;
         switch (selectedService) {
             case LOOKUP_RECORDS -> {
-                List<Calculator> findCalculations = findCalculations();
+                List<CalculationResult> findCalculations = findCalculations();
                 output.printResult(findCalculations);
             }
             case CALCULATION -> {

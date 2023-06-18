@@ -1,6 +1,6 @@
 package com.programmers.service;
 
-import com.programmers.domain.Calculator;
+import com.programmers.vo.CalculationResult;
 import com.programmers.io.Console;
 import com.programmers.repository.CalculatorMemoryRepository;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 
-import static com.programmers.util.CalculatorTestUtil.createCalculation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -60,23 +59,23 @@ public class CalculatorServiceTest {
         calculatorService.calculate(inputA);
 
         //then
-        List<Calculator> result = calculatorRepository.findAll();
+        List<CalculationResult> result = calculatorRepository.findAll();
 
-        Calculator expected = createCalculation("1 + 2 + 3");
+        CalculationResult expected = new CalculationResult(List.of("1", "+", "2", "+", "3"), 6);
         assertThat(result).containsExactly(expected);
     }
 
     @Test
     void findCalculations() {
         //given
-        Calculator calculationA = createCalculation("1 + 2 + 3");
-        Calculator calculationB = createCalculation("1 * 2 - 3");
+        CalculationResult calculationA = new CalculationResult(List.of("1", "+", "2", "+", "3"), 6);
+        CalculationResult calculationB = new CalculationResult(List.of("1", "*", "2", "-", "3"), -1);
 
         calculatorRepository.save(calculationA);
         calculatorRepository.save(calculationB);
 
         //when
-        List<Calculator> resultA = calculatorService.findCalculations();
+        List<CalculationResult> resultA = calculatorService.findCalculations();
 
         //then
         assertThat(resultA).containsExactly(calculationA, calculationB);
