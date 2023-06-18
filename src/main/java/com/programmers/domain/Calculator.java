@@ -4,23 +4,18 @@ import com.programmers.enumtype.Operator;
 import com.programmers.util.Arithmetic;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Stack;
 
 public class Calculator {
-    private final List<String> infixExpression;
     private final List<String> postfixExpression;
-    private int result;
 
     public Calculator(List<String> infixExpression) {
-        this.infixExpression = infixExpression;
-        validateExpression();
+        validateExpression(infixExpression);
 
         this.postfixExpression = PostfixConverter.convert(infixExpression);
-        this.result = 0;
     }
 
-    private void validateExpression() {
+    private void validateExpression(List<String> infixExpression) {
         boolean numberTurn = true;
         for (String element : infixExpression) {
             if (Arithmetic.isNumber(element) && numberTurn) {
@@ -42,9 +37,8 @@ public class Calculator {
         for (String element : postfixExpression) {
             numbers.push(processOperation(numbers, element));
         }
-        result = numbers.pop();
 
-        return result;
+        return numbers.pop();
     }
 
     private int processOperation(Stack<Integer> numbers, String element) {
@@ -57,38 +51,5 @@ public class Calculator {
 
     private int binaryOperate(int a, int b, String operator) {
         return Operator.binaryOperate(b, a, operator);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (String element : infixExpression) {
-            sb.append(element);
-            sb.append(" ");
-        }
-        sb.append("= ");
-        sb.append(result);
-
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Calculator that = (Calculator) o;
-        return result
-                == that.result
-                && Objects.equals(infixExpression, that.infixExpression)
-                && Objects.equals(postfixExpression, that.postfixExpression);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(infixExpression, postfixExpression, result);
     }
 }
