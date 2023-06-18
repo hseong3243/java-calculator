@@ -49,7 +49,8 @@ public class Calculator {
         return binaryOperate(numbers.pop(), numbers.pop(), element);
     }
 
-    private int binaryOperate(int a, int b, String operator) {
-        return Operator.binaryOperate(b, a, operator);
+    private int binaryOperate(int a, int b, String rawOperator) {
+        Operator operator = Operator.getValue(rawOperator);
+        return operator.binaryOperate(b, a);
     }
 }

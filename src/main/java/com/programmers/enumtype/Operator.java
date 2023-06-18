@@ -32,9 +32,8 @@ public enum Operator {
         return operator;
     }
 
-    public static int binaryOperate(int num1, int num2, String operator) {
-        return getValue(operator)
-                .binaryOperation.apply(num1, num2);
+    public int binaryOperate(int num1, int num2) {
+        return binaryOperation.apply(num1, num2);
     }
 
     public boolean comparePriorityTo(Operator operator) {
